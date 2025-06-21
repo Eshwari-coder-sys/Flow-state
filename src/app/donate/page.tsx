@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/header";
+import { useDonors } from "@/context/donor-context";
 
 const donationFormSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -28,6 +30,7 @@ const donationFormSchema = z.object({
 
 export default function DonatePage() {
   const { toast } = useToast();
+  const { addDonor } = useDonors();
 
   const form = useForm<z.infer<typeof donationFormSchema>>({
     resolver: zodResolver(donationFormSchema),
@@ -43,7 +46,7 @@ export default function DonatePage() {
   });
 
   function onSubmit(data: z.infer<typeof donationFormSchema>) {
-    console.log(data);
+    addDonor(data);
     toast({
       title: "Thank You For Registering!",
       description: "You've been added to our donor registry. Your generosity can save lives.",

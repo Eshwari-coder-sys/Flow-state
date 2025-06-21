@@ -1,9 +1,11 @@
+
 "use client"
 
 import { usePathname } from 'next/navigation';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import MainLayout from '@/components/layout/main-layout';
+import { DonorProvider } from '@/context/donor-context';
 
 export default function RootLayout({
   children,
@@ -27,8 +29,10 @@ export default function RootLayout({
         ></link>
       </head>
       <body className="font-body antialiased">
-        {isAppPage ? <MainLayout>{children}</MainLayout> : children}
-        <Toaster />
+        <DonorProvider>
+          {isAppPage ? <MainLayout>{children}</MainLayout> : children}
+          <Toaster />
+        </DonorProvider>
       </body>
     </html>
   );
