@@ -72,15 +72,25 @@ export function DonorProvider({ children }: { children: ReactNode }) {
 
           for (let i = 0; i < units; i++) {
               const unitToReserve = currentAvailableUnits[i];
-              const originalUnitIndex = updatedInventory.findIndex(u => u.id === unitToReserve.id);
-              if (originalUnitIndex > -1) {
-                  updatedInventory[originalUnitIndex].status = 'Reserved';
+              if (unitToReserve) {
+                const originalUnitIndex = updatedInventory.findIndex(u => u.id === unitToReserve.id);
+                if (originalUnitIndex > -1) {
+                    updatedInventory[originalUnitIndex].status = 'Reserved';
+                }
               }
           }
           
           return updatedInventory;
       });
 
+      const matchingDonors = donors.filter(
+        (donor) => donor.bloodType === bloodType
+      );
+      toast({
+        title: "Request Submitted & Units Reserved!",
+        description: `An alert has been sent to ${matchingDonors.length} matching donor(s) with blood type ${bloodType} to encourage new donations.`,
+      });
+      
       return true;
   };
 

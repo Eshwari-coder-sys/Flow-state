@@ -72,14 +72,6 @@ export default function RequestPage() {
     const requestSuccessful = requestBlood(data.bloodType, data.units);
 
     if (requestSuccessful) {
-      const matchingDonors = donors.filter(
-        (donor) => donor.bloodType === data.bloodType
-      );
-      toast({
-        title: "Request Submitted & Units Reserved!",
-        description: `An alert has been sent to ${matchingDonors.length} matching donor(s) with blood type ${data.bloodType} to encourage new donations.`,
-      });
-      
       // Reset patient-specific fields, but keep location and blood type
       // so the donor suggestions remain relevant for the current search.
       form.reset({
