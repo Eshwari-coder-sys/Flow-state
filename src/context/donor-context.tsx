@@ -46,11 +46,20 @@ export function DonorProvider({ children }: { children: ReactNode }) {
   const addInventoryItem = (newItemData: Omit<InventoryItem, 'id'>) => {
       setInventory(prevInventory => {
           const newInventory = [...prevInventory];
-          const newItem: InventoryItem = {
+          const existingItemIndex = newInventory.findIndex(
+            (item) => item.bloodType === newItemData.bloodType && item.expiryDate === newItemData.expiryDate
+          );
+  
+          if (existingItemIndex > -1) {
+            newInventory[existingItemIndex].quantity += newItemData.quantity;
+          } else {
+            const newItem: InventoryItem = {
               ...newItemData,
               id: `inv-${Date.now()}-${Math.random()}`
-          };
-          return [newItem, ...newInventory];
+            };
+            newInventory.unshift(newItem);
+          }
+          return newInventory;
       });
   };
 
