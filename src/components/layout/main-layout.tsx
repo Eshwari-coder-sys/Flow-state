@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/donate", label: "Donate Blood", icon: PlusSquare },
   { href: "/request", label: "Request Blood", icon: Send },
   { href: "/forecasting", label: "Forecasting", icon: LineChart },
@@ -37,18 +37,17 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2 p-2">
+          <Link href="/" className="flex items-center gap-2 p-2" prefetch={false}>
             <div className="p-1.5 rounded-lg bg-primary text-primary-foreground">
                 <HeartPulse className="h-6 w-6" />
             </div>
             <span className="text-xl font-semibold">FlowState</span>
-          </div>
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             {navItems.map((item) => {
-              const isActive =
-                item.href === "/"
+              const isActive = item.href === "/dashboard"
                   ? pathname === item.href
                   : pathname.startsWith(item.href);
 

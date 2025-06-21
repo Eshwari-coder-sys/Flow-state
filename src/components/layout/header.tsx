@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,14 +40,18 @@ export default function Header({ title }: HeaderProps) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Admin Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+            <DropdownMenuItem asChild>
+              <Link href="/">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
