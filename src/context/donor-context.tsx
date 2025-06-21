@@ -7,15 +7,15 @@ import { useToast } from '@/hooks/use-toast';
 
 // The initial mock data for donors.
 const mockDonors: Donor[] = [
-  { id: '1', fullName: 'John Smith', email: 'john.s@example.com', phone: '555-123-4567', bloodType: 'O+', address: '123 Main St', city: 'Springfield', state: 'IL', country: 'USA', lastDonation: '2024-05-10' },
-  { id: '2', fullName: 'Jane Doe', email: 'jane.d@example.com', phone: '555-987-6543', bloodType: 'A-', address: '456 Oak Ave', city: 'Shelbyville', state: 'IL', country: 'USA', lastDonation: '2024-06-20' },
-  { id: '3', fullName: 'Peter Jones', email: 'peter.j@example.com', phone: '555-555-1212', bloodType: 'B+', address: '789 Pine Ln', city: 'Springfield', state: 'MA', country: 'USA', lastDonation: '2024-04-01' },
-  { id: '4', fullName: 'Mary Johnson', email: 'mary.j@example.com', phone: '555-345-6789', bloodType: 'AB+', address: '101 Maple Dr', city: 'Capital City', state: 'CA', country: 'USA', lastDonation: '2024-07-02' },
-  { id: '5', fullName: 'David Williams', email: 'david.w@example.com', phone: '555-234-5678', bloodType: 'O-', address: '212 Birch Rd', city: 'Springfield', state: 'IL', country: 'USA', lastDonation: '2024-03-15' },
-  { id: '6', fullName: 'Sarah Brown', email: 'sarah.b@example.com', phone: '555-876-5432', bloodType: 'A+', address: '333 Cedar Ct', city: 'Toronto', state: 'ON', country: 'Canada', lastDonation: '2024-06-30' },
-  { id: '7', fullName: 'Michael Davis', email: 'michael.d@example.com', phone: '555-111-2222', bloodType: 'B-', address: '456 Elm St', city: 'Vancouver', state: 'BC', country: 'Canada', lastDonation: '2024-07-11' },
-  { id: '8', fullName: 'Linda Miller', email: 'linda.m@example.com', phone: '555-333-4444', bloodType: 'O+', address: '789 Oak Blvd', city: 'Springfield', state: 'MA', country: 'USA', lastDonation: '2024-02-28' },
-  { id: '9', fullName: 'Robert Wilson', email: 'robert.w@example.com', phone: '555-444-5555', bloodType: 'A+', address: '111 Pine St', city: 'Springfield', state: 'IL', country: 'USA', lastDonation: '2024-01-20' },
+  { id: '1', fullName: 'Rajesh Kumar', email: 'rajesh.k@example.com', phone: '98-1234-5678', bloodType: 'O+', address: '123 Marine Drive', city: 'Mumbai', state: 'Maharashtra', country: 'India', lastDonation: '2024-05-10' },
+  { id: '2', fullName: 'Priya Sharma', email: 'priya.s@example.com', phone: '99-9876-5432', bloodType: 'A-', address: '456 Connaught Place', city: 'Delhi', state: 'Delhi', country: 'India', lastDonation: '2024-06-20' },
+  { id: '3', fullName: 'Amit Patel', email: 'amit.p@example.com', phone: '97-5551-2121', bloodType: 'B+', address: '789 MG Road', city: 'Bangalore', state: 'Karnataka', country: 'India', lastDonation: '2024-04-01' },
+  { id: '4', fullName: 'Sunita Rao', email: 'sunita.r@example.com', phone: '96-3456-7890', bloodType: 'AB+', address: '101 Anna Salai', city: 'Chennai', state: 'Tamil Nadu', country: 'India', lastDonation: '2024-07-02' },
+  { id: '5', fullName: 'Vikram Singh', email: 'vikram.s@example.com', phone: '95-2345-6789', bloodType: 'O-', address: '212 Jubilee Hills', city: 'Hyderabad', state: 'Telangana', country: 'India', lastDonation: '2024-03-15' },
+  { id: '6', fullName: 'Anjali Gupta', email: 'anjali.g@example.com', phone: '94-8765-4321', bloodType: 'A+', address: '333 Park Street', city: 'Kolkata', state: 'West Bengal', country: 'India', lastDonation: '2024-06-30' },
+  { id: '7', fullName: 'Sanjay Verma', email: 'sanjay.v@example.com', phone: '93-1112-2222', bloodType: 'B-', address: '456 FC Road', city: 'Pune', state: 'Maharashtra', country: 'India', lastDonation: '2024-07-11' },
+  { id: '8', fullName: 'Meera Nair', email: 'meera.n@example.com', phone: '92-3334-4444', bloodType: 'O+', address: '789 CG Road', city: 'Ahmedabad', state: 'Gujarat', country: 'India', lastDonation: '2024-02-28' },
+  { id: '9', fullName: 'Arun Joshi', email: 'arun.j@example.com', phone: '91-4445-5555', bloodType: 'A+', address: '111 MI Road', city: 'Jaipur', state: 'Rajasthan', country: 'India', lastDonation: '2024-01-20' },
 ];
 
 // The initial mock data for inventory.
