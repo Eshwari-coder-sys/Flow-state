@@ -85,7 +85,7 @@ export const columns: ColumnDef<Donor>[] = [
   {
     accessorKey: "lastDonation",
     header: "Last Donation",
-    cell: ({ row }) => format(row.getValue("lastDonation") as Date, 'MMM dd, yyyy'),
+    cell: ({ row }) => format(new Date(row.getValue("lastDonation") as string), 'MMM dd, yyyy'),
   },
 ];
 

@@ -9,14 +9,14 @@ import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 
 const mockInventory: InventoryItem[] = [
-  { id: '1', bloodType: 'A+', quantity: 25, expiryDate: new Date('2024-09-15'), status: 'Available' },
-  { id: '2', bloodType: 'O-', quantity: 10, expiryDate: new Date('2024-08-05'), status: 'Expiring Soon' },
-  { id: '3', bloodType: 'B+', quantity: 18, expiryDate: new Date('2024-10-01'), status: 'Available' },
-  { id: '4', bloodType: 'AB+', quantity: 5, expiryDate: new Date('2024-08-20'), status: 'Low' },
-  { id: '5', bloodType: 'O+', quantity: 40, expiryDate: new Date('2024-09-28'), status: 'Available' },
-  { id: '6', bloodType: 'A-', quantity: 12, expiryDate: new Date('2024-10-10'), status: 'Available' },
-  { id: '7', bloodType: 'B-', quantity: 8, expiryDate: new Date('2024-08-12'), status: 'Low' },
-  { id: '8', bloodType: 'AB-', quantity: 3, expiryDate: new Date('2024-09-02'), status: 'Expiring Soon' },
+  { id: '1', bloodType: 'A+', quantity: 25, expiryDate: '2024-09-15', status: 'Available' },
+  { id: '2', bloodType: 'O-', quantity: 10, expiryDate: '2024-08-05', status: 'Expiring Soon' },
+  { id: '3', bloodType: 'B+', quantity: 18, expiryDate: '2024-10-01', status: 'Available' },
+  { id: '4', bloodType: 'AB+', quantity: 5, expiryDate: '2024-08-20', status: 'Low' },
+  { id: '5', bloodType: 'O+', quantity: 40, expiryDate: '2024-09-28', status: 'Available' },
+  { id: '6', bloodType: 'A-', quantity: 12, expiryDate: '2024-10-10', status: 'Available' },
+  { id: '7', bloodType: 'B-', quantity: 8, expiryDate: '2024-08-12', status: 'Low' },
+  { id: '8', bloodType: 'AB-', quantity: 3, expiryDate: '2024-09-02', status: 'Expiring Soon' },
 ];
 
 export default function DashboardPage() {

@@ -82,7 +82,7 @@ export const columns: ColumnDef<InventoryItem>[] = [
     accessorKey: "expiryDate",
     header: "Expiry Date",
     cell: ({ row }) => {
-        const date = row.getValue("expiryDate") as Date;
+        const date = new Date(row.getValue("expiryDate") as string);
         const daysUntilExpiry = differenceInDays(date, new Date());
         return (
             <div>

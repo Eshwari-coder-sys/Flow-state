@@ -2,7 +2,7 @@ export type InventoryItem = {
     id: string;
     bloodType: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
     quantity: number;
-    expiryDate: Date;
+    expiryDate: string;
     status: 'Available' | 'Low' | 'Expiring Soon';
 };
 
@@ -16,5 +16,5 @@ export type Donor = {
   city: string;
   state: string;
   country: string;
-  lastDonation: Date;
+  lastDonation: string;
 };
