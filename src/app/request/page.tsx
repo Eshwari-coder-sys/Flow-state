@@ -29,7 +29,7 @@ const requestFormSchema = z.object({
 
 export default function RequestPage() {
   const { toast } = useToast();
-  const { donors } = useDonors();
+  const { donors, requestBlood } = useDonors();
   const [suggestedDonors, setSuggestedDonors] = useState<Donor[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -69,10 +69,10 @@ export default function RequestPage() {
   }, [watchedBloodType, watchedCity, watchedState, donors]);
 
   function onSubmit(data: z.infer<typeof requestFormSchema>) {
-    console.log(data);
+    requestBlood(data.bloodType, data.units);
     toast({
       title: "Request Submitted!",
-      description: "Your blood request has been received and is being processed.",
+      description: `Your request for ${data.units} unit(s) of ${data.bloodType} has been processed.`,
     });
     form.reset({ patientName: "", hospital: "", city: "", state: "", units: 1 });
     setSuggestedDonors([]);
@@ -88,7 +88,7 @@ export default function RequestPage() {
               <CardHeader>
                 <CardTitle className="text-2xl">Submit a Blood Request</CardTitle>
                 <CardDescription>
-                  For use by hospitals and clinics. As you enter a location and blood type, we'll automatically search for nearby donors.
+                  For use by hospitals and clinics. This will draw from the inventory. We'll also automatically search for nearby donors for direct contact.
                 </CardDescription>
               </CardHeader>
               <CardContent>

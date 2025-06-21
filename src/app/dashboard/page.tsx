@@ -1,30 +1,24 @@
+
+"use client";
+
 import Link from 'next/link';
 import Header from '@/components/layout/header';
 import StatsCards from '@/components/dashboard/stats-cards';
 import BloodTypeChart from '@/components/dashboard/blood-type-chart';
 import InventoryTable from '@/components/dashboard/inventory-table';
-import type { InventoryItem } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
-
-const mockInventory: InventoryItem[] = [
-  { id: '1', bloodType: 'A+', quantity: 25, expiryDate: '2024-09-15', status: 'Available' },
-  { id: '2', bloodType: 'O-', quantity: 10, expiryDate: '2024-08-05', status: 'Expiring Soon' },
-  { id: '3', bloodType: 'B+', quantity: 18, expiryDate: '2024-10-01', status: 'Available' },
-  { id: '4', bloodType: 'AB+', quantity: 5, expiryDate: '2024-08-20', status: 'Low' },
-  { id: '5', bloodType: 'O+', quantity: 40, expiryDate: '2024-09-28', status: 'Available' },
-  { id: '6', bloodType: 'A-', quantity: 12, expiryDate: '2024-10-10', status: 'Available' },
-  { id: '7', bloodType: 'B-', quantity: 8, expiryDate: '2024-08-12', status: 'Low' },
-  { id: '8', bloodType: 'AB-', quantity: 3, expiryDate: '2024-09-02', status: 'Expiring Soon' },
-];
+import { useDonors } from '@/context/donor-context';
 
 export default function DashboardPage() {
+  const { inventory } = useDonors();
+
   return (
     <div className="flex flex-col gap-8">
       <Header title="Dashboard" />
       <main className="grid flex-1 gap-8 p-4 md:p-6">
-        <StatsCards inventory={mockInventory} />
+        <StatsCards inventory={inventory} />
 
         <Card className="bg-primary/10 border-primary/40">
           <CardHeader>
@@ -49,7 +43,7 @@ export default function DashboardPage() {
               <CardTitle>Inventory Details</CardTitle>
             </CardHeader>
             <CardContent>
-              <InventoryTable data={mockInventory} />
+              <InventoryTable data={inventory} />
             </CardContent>
           </Card>
           <Card className="lg:col-span-2">
@@ -57,7 +51,7 @@ export default function DashboardPage() {
               <CardTitle>Blood Type Distribution</CardTitle>
             </CardHeader>
             <CardContent>
-              <BloodTypeChart data={mockInventory} />
+              <BloodTypeChart data={inventory} />
             </CardContent>
           </Card>
         </div>

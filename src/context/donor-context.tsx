@@ -1,8 +1,9 @@
 
 "use client";
 
-import type { Donor } from '@/lib/types';
+import type { Donor, InventoryItem } from '@/lib/types';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 // The initial mock data for donors.
 const mockDonors: Donor[] = [
@@ -18,34 +19,79 @@ const mockDonors: Donor[] = [
 ];
 
 
-interface DonorContextType {
+interface BloodBankContextType {
   donors: Donor[];
   addDonor: (donor: Omit<Donor, 'id' | 'lastDonation'>) => void;
+  inventory: InventoryItem[];
+  addInventoryItem: (item: Omit<InventoryItem, 'id'>) => void;
+  requestBlood: (bloodType: InventoryItem['bloodType'], units: number) => void;
 }
 
-const DonorContext = createContext<DonorContextType | undefined>(undefined);
+const BloodBankContext = createContext<BloodBankContextType | undefined>(undefined);
 
 export function DonorProvider({ children }: { children: ReactNode }) {
+  const { toast } = useToast();
   const [donors, setDonors] = useState<Donor[]>(mockDonors);
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
 
   const addDonor = (newDonorData: Omit<Donor, 'id' | 'lastDonation'>) => {
     const newDonor: Donor = {
       ...newDonorData,
       id: (donors.length + 1).toString(),
-      lastDonation: new Date().toISOString().split('T')[0], // Set last donation to today
+      lastDonation: new Date().toISOString().split('T')[0],
     };
     setDonors((prevDonors) => [newDonor, ...prevDonors]);
   };
+  
+  const addInventoryItem = (newItemData: Omit<InventoryItem, 'id'>) => {
+      setInventory(prevInventory => {
+          const newInventory = [...prevInventory];
+          const newItem: InventoryItem = {
+              ...newItemData,
+              id: `inv-${Date.now()}-${Math.random()}`
+          };
+          return [newItem, ...newInventory];
+      });
+  };
+
+  const requestBlood = (bloodType: InventoryItem['bloodType'], units: number) => {
+      setInventory(prevInventory => {
+          const updatedInventory = JSON.parse(JSON.stringify(prevInventory));
+          let unitsToFulfill = units;
+
+          updatedInventory.sort((a: InventoryItem, b: InventoryItem) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
+
+          for (const item of updatedInventory) {
+              if (item.bloodType === bloodType && item.quantity > 0) {
+                  const take = Math.min(unitsToFulfill, item.quantity);
+                  item.quantity -= take;
+                  unitsToFulfill -= take;
+                  if (unitsToFulfill === 0) break;
+              }
+          }
+
+          if (unitsToFulfill > 0) {
+              toast({
+                  variant: "destructive",
+                  title: "Inventory Alert",
+                  description: `Could not fulfill the entire request. Short by ${unitsToFulfill} units of ${bloodType}.`,
+              });
+          }
+          
+          return updatedInventory.filter((item: InventoryItem) => item.quantity > 0);
+      });
+  };
+
 
   return (
-    <DonorContext.Provider value={{ donors, addDonor }}>
+    <BloodBankContext.Provider value={{ donors, addDonor, inventory, addInventoryItem, requestBlood }}>
       {children}
-    </DonorContext.Provider>
+    </BloodBankContext.Provider>
   );
 }
 
 export function useDonors() {
-  const context = useContext(DonorContext);
+  const context = useContext(BloodBankContext);
   if (context === undefined) {
     throw new Error('useDonors must be used within a DonorProvider');
   }

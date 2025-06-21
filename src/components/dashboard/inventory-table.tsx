@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -36,7 +37,20 @@ import type { InventoryItem } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-const getStatusBadgeVariant = (status: InventoryItem['status']) => {
+const EXPIRY_THRESHOLD_DAYS = 15;
+const LOW_STOCK_THRESHOLD = 10;
+
+type ItemStatus = 'Available' | 'Low' | 'Expiring Soon';
+
+const getItemStatus = (item: InventoryItem): ItemStatus => {
+  const daysLeft = differenceInDays(new Date(item.expiryDate), new Date());
+  if (daysLeft < 0) return 'Expiring Soon'; // Should be handled as expired but for status let's group here.
+  if (daysLeft < EXPIRY_THRESHOLD_DAYS) return 'Expiring Soon';
+  if (item.quantity < LOW_STOCK_THRESHOLD) return 'Low';
+  return 'Available';
+};
+
+const getStatusBadgeVariant = (status: ItemStatus) => {
   switch (status) {
     case 'Available':
       return 'secondary';
@@ -87,18 +101,19 @@ export const columns: ColumnDef<InventoryItem>[] = [
         return (
             <div>
                 <div>{format(date, 'MMM dd, yyyy')}</div>
-                <div className={cn("text-xs", daysUntilExpiry < 15 ? "text-destructive" : "text-muted-foreground")}>
-                    {daysUntilExpiry > 0 ? `${daysUntilExpiry} days left` : 'Expired'}
+                <div className={cn("text-xs", daysUntilExpiry < EXPIRY_THRESHOLD_DAYS ? "text-destructive" : "text-muted-foreground")}>
+                    {daysUntilExpiry >= 0 ? `${daysUntilExpiry} days left` : 'Expired'}
                 </div>
             </div>
         )
     }
   },
   {
-    accessorKey: "status",
+    id: "status",
+    accessorFn: (row) => getItemStatus(row),
     header: "Status",
     cell: ({ row }) => {
-        const status = row.getValue("status") as InventoryItem['status'];
+        const status = row.getValue("status") as ItemStatus;
         return <Badge variant={getStatusBadgeVariant(status)}>{status}</Badge>;
     },
     filterFn: (row, id, value) => {
@@ -205,7 +220,7 @@ export default function InventoryTable({ data }: InventoryTableProps) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No inventory data. Donations can be added via the 'Become a Donor' page.
                 </TableCell>
               </TableRow>
             )}

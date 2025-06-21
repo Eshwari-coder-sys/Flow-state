@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Droplets } from "lucide-react";
+import { addDays, format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,7 +31,7 @@ const donationFormSchema = z.object({
 
 export default function DonatePage() {
   const { toast } = useToast();
-  const { addDonor } = useDonors();
+  const { addDonor, addInventoryItem } = useDonors();
 
   const form = useForm<z.infer<typeof donationFormSchema>>({
     resolver: zodResolver(donationFormSchema),
@@ -47,9 +48,14 @@ export default function DonatePage() {
 
   function onSubmit(data: z.infer<typeof donationFormSchema>) {
     addDonor(data);
+    addInventoryItem({
+      bloodType: data.bloodType,
+      quantity: 1, // Each registration adds one unit to the inventory
+      expiryDate: format(addDays(new Date(), 42), 'yyyy-MM-dd'),
+    });
     toast({
       title: "Thank You For Registering!",
-      description: "You've been added to our donor registry. Your generosity can save lives.",
+      description: "You've been added to the donor registry and your donation has been logged in the inventory.",
     });
     form.reset();
   }
@@ -63,7 +69,7 @@ export default function DonatePage() {
             <CardHeader>
               <CardTitle className="text-2xl">Donor Registration</CardTitle>
               <CardDescription>
-                Join our community of lifesavers. Please fill out the form below to be added to our donor registry.
+                Join our community of lifesavers. Registering here also records a donation of 1 unit of your blood type.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -196,7 +202,7 @@ export default function DonatePage() {
                   
                   <Button type="submit" size="lg" className="w-full">
                     <Droplets className="mr-2" />
-                    Register as a Donor
+                    Register and Donate
                   </Button>
                 </form>
               </Form>

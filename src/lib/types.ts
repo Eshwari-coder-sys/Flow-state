@@ -3,7 +3,6 @@ export type InventoryItem = {
     bloodType: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
     quantity: number;
     expiryDate: string;
-    status: 'Available' | 'Low' | 'Expiring Soon';
 };
 
 export type Donor = {

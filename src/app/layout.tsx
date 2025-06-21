@@ -6,6 +6,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import MainLayout from '@/components/layout/main-layout';
 import { DonorProvider } from '@/context/donor-context';
+import React from 'react';
 
 export default function RootLayout({
   children,
@@ -15,6 +16,20 @@ export default function RootLayout({
   const pathname = usePathname();
   const publicRoutes = ['/', '/login', '/signup'];
   const isAppPage = !publicRoutes.includes(pathname);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <body />
+      </html>
+    );
+  }
+
 
   return (
     <html lang="en" suppressHydrationWarning>
