@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BarChart, HeartPulse, ShieldCheck, Users } from "lucide-react";
@@ -97,6 +98,34 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="py-20 md:py-28">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">A Community of Lifesavers</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">
+                            Join a network of donors and healthcare professionals dedicated to making a difference. Our platform connects those in need with those who can help, creating a stronger, healthier community.
+                        </p>
+                        <div className="mt-8">
+                            <Button asChild>
+                                <Link href="/donate">Become a Donor</Link>
+                            </Button>
+                        </div>
+                    </div>
+                    <div className="rounded-lg overflow-hidden shadow-lg">
+                        <Image
+                            src="https://placehold.co/600x400.png"
+                            alt="Community of donors"
+                            width={600}
+                            height={400}
+                            data-ai-hint="community health"
+                            className="w-full h-auto object-cover"
+                        />
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="testimonials" className="py-20 md:py-28">
