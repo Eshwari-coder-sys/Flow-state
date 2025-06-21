@@ -139,7 +139,7 @@ export default function LandingPage() {
                         <CardContent className="pt-6">
                             <p className="italic">"FlowState has been a game-changer for our inventory management. The AI forecasting is incredibly accurate and has helped us reduce waste by over 30%."</p>
                             <div className="mt-4 flex items-center gap-4">
-                                <Image src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Dr. Emily Carter" width={48} height={48} className="rounded-full" />
+                                <Image src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&q=80" alt="Portrait of Dr. Emily Carter" width={48} height={48} className="rounded-full" />
                                 <div>
                                     <p className="font-semibold">Dr. Emily Carter</p>
                                     <p className="text-sm text-muted-foreground">Head of Transfusion Services</p>
@@ -151,7 +151,7 @@ export default function LandingPage() {
                         <CardContent className="pt-6">
                             <p className="italic">"The user interface is so intuitive. Our staff was able to get up and running in a single afternoon. It simplified our entire workflow from donation to transfusion."</p>
                              <div className="mt-4 flex items-center gap-4">
-                                <Image src="https://i.pravatar.cc/150?u=b042581f4e29026704e" alt="Mark Chen" width={48} height={48} className="rounded-full" />
+                                <Image src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&q=80" alt="Portrait of Mark Chen" width={48} height={48} className="rounded-full" />
                                 <div>
                                     <p className="font-semibold">Mark Chen</p>
                                     <p className="text-sm text-muted-foreground">Blood Bank Manager</p>
@@ -163,7 +163,7 @@ export default function LandingPage() {
                         <CardContent className="pt-6">
                            <p className="italic">"A vital tool for any modern healthcare facility. The ability to see real-time data and generate reports has improved our efficiency and patient care."</p>
                              <div className="mt-4 flex items-center gap-4">
-                                <Image src="https://i.pravatar.cc/150?u=c042581f4e29026704f" alt="Dr. Anya Sharma" width={48} height={48} className="rounded-full" />
+                                <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80" alt="Portrait of Dr. Anya Sharma" width={48} height={48} className="rounded-full" />
                                 <div>
                                     <p className="font-semibold">Dr. Anya Sharma</p>
                                     <p className="text-sm text-muted-foreground">Hospital Administrator</p>
