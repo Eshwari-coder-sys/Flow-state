@@ -1,17 +1,18 @@
 
 import { Droplets, TrendingUp, AlertTriangle, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { InventoryItem } from '@/lib/types';
+import type { Donor, InventoryItem } from '@/lib/types';
 import { differenceInDays } from 'date-fns';
 
 interface StatsCardsProps {
   inventory: InventoryItem[];
+  donors: Donor[];
 }
 
 const EXPIRY_THRESHOLD_DAYS = 15;
 const LOW_STOCK_THRESHOLD = 10;
 
-export default function StatsCards({ inventory }: StatsCardsProps) {
+export default function StatsCards({ inventory, donors }: StatsCardsProps) {
   const totalUnits = inventory.reduce((acc, item) => acc + item.quantity, 0);
 
   const expiringSoonItems = inventory.filter(item => differenceInDays(new Date(item.expiryDate), new Date()) < EXPIRY_THRESHOLD_DAYS);
@@ -19,11 +20,11 @@ export default function StatsCards({ inventory }: StatsCardsProps) {
 
   const lowStockItems = inventory.filter(item => item.quantity < LOW_STOCK_THRESHOLD);
   
-  const bloodTypesInStock = new Set(inventory.map(item => item.bloodType)).size;
+  const totalDonors = donors.length;
 
   const stats = [
     { title: 'Total Units', value: totalUnits, icon: Droplets, description: 'Across all blood types' },
-    { title: 'Blood Types in Stock', value: bloodTypesInStock, icon: Users, description: 'Unique types in stock' },
+    { title: 'Total Donors', value: totalDonors, icon: Users, description: 'Registered in the system' },
     { title: 'Expiring Units', value: expiringSoonUnits, icon: AlertTriangle, description: `In the next ${EXPIRY_THRESHOLD_DAYS} days` },
     { title: 'Low Stock Items', value: lowStockItems.length, icon: TrendingUp, description: `Items with < ${LOW_STOCK_THRESHOLD} units`, isWarning: true },
   ];

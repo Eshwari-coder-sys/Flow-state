@@ -12,13 +12,13 @@ import { Search } from 'lucide-react';
 import { useDonors } from '@/context/donor-context';
 
 export default function DashboardPage() {
-  const { inventory } = useDonors();
+  const { inventory, donors } = useDonors();
 
   return (
     <div className="flex flex-col gap-8">
       <Header title="Dashboard" />
       <main className="grid flex-1 gap-8 p-4 md:p-6">
-        <StatsCards inventory={inventory} />
+        <StatsCards inventory={inventory} donors={donors} />
 
         <Card className="bg-primary/10 border-primary/40">
           <CardHeader>
