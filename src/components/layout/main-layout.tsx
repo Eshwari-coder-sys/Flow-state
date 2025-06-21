@@ -65,9 +65,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
               return (
                 <SidebarMenuItem key={item.href}>
-                  <Link href={item.href} legacyBehavior passHref>
+                  <Link href={item.href}>
                     <SidebarMenuButton
-                      as="a"
                       isActive={isActive}
                       tooltip={{
                         children: item.label,
