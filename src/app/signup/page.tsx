@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -20,6 +21,7 @@ const signupFormSchema = z.object({
 
 export default function SignupPage() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
@@ -36,8 +38,7 @@ export default function SignupPage() {
       title: "Account Created!",
       description: "You have successfully signed up. Please log in.",
     });
-    // Here you would typically redirect the user to the login page
-    // window.location.href = '/login';
+    router.push('/login');
   }
 
   return (

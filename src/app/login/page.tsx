@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { HeartPulse, ArrowRight } from "lucide-react";
+import { HeartPulse } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +20,7 @@ const loginFormSchema = z.object({
 
 export default function LoginPage() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -34,8 +36,7 @@ export default function LoginPage() {
       title: "Login Successful",
       description: "Redirecting to your dashboard...",
     });
-    // Here you would typically redirect the user
-    // window.location.href = '/dashboard';
+    router.push('/dashboard');
   }
 
   return (
