@@ -10,7 +10,7 @@ interface BloodBankContextType {
   donors: Donor[];
   addDonor: (donor: Omit<Donor, 'id' | 'lastDonation'>) => void;
   inventory: BloodUnit[];
-  addInventoryItem: (item: { bloodType: BloodUnit['bloodType'], quantity: number }) => void;
+  addInventoryItem: (item: { bloodType: BloodUnit['bloodType'], quantity: number, bloodBankName: string, bloodBankAddress: string }) => void;
   requestBlood: (bloodType: BloodUnit['bloodType'], units: number) => void;
 }
 
@@ -30,7 +30,7 @@ export function DonorProvider({ children }: { children: ReactNode }) {
     setDonors((prevDonors) => [newDonor, ...prevDonors]);
   };
   
-  const addInventoryItem = (newItemData: { bloodType: BloodUnit['bloodType'], quantity: number }) => {
+  const addInventoryItem = (newItemData: { bloodType: BloodUnit['bloodType'], quantity: number, bloodBankName: string, bloodBankAddress: string }) => {
       setInventory(prevInventory => {
           const newUnits: BloodUnit[] = [];
           const expiryDate = format(addDays(new Date(), 42), 'yyyy-MM-dd');
@@ -40,7 +40,9 @@ export function DonorProvider({ children }: { children: ReactNode }) {
                   id: `unit-${Date.now()}-${Math.random()}`,
                   bloodType: newItemData.bloodType,
                   expiryDate: expiryDate,
-                  status: 'Available'
+                  status: 'Available',
+                  bloodBankName: newItemData.bloodBankName,
+                  bloodBankAddress: newItemData.bloodBankAddress,
               });
           }
           

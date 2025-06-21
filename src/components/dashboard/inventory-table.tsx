@@ -74,6 +74,18 @@ export const columns: ColumnDef<BloodUnit>[] = [
     },
   },
   {
+    header: "Blood Bank",
+    cell: ({ row }) => {
+        const unit = row.original;
+        return (
+            <div>
+                <div className="font-medium">{unit.bloodBankName}</div>
+                <div className="text-xs text-muted-foreground">{unit.bloodBankAddress}</div>
+            </div>
+        )
+    }
+  },
+  {
     accessorKey: "expiryDate",
     header: "Expiry Date",
     cell: ({ row }) => {

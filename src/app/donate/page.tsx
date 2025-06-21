@@ -27,6 +27,8 @@ const donationFormSchema = z.object({
   city: z.string().min(2, "Please enter a valid city."),
   state: z.string().min(2, "Please enter a valid state/province."),
   country: z.string().min(2, "Please enter a valid country."),
+  bloodBankName: z.string().min(3, "Blood bank name is required."),
+  bloodBankAddress: z.string().min(5, "Blood bank address is required."),
 });
 
 export default function DonatePage() {
@@ -43,6 +45,8 @@ export default function DonatePage() {
       city: "",
       state: "",
       country: "",
+      bloodBankName: "",
+      bloodBankAddress: "",
     },
   });
 
@@ -51,6 +55,8 @@ export default function DonatePage() {
     addInventoryItem({
       bloodType: data.bloodType,
       quantity: 1, // Each registration adds one unit to the inventory
+      bloodBankName: data.bloodBankName,
+      bloodBankAddress: data.bloodBankAddress,
     });
     toast({
       title: "Thank You For Registering!",
@@ -199,6 +205,35 @@ export default function DonatePage() {
                     />
                   </div>
                   
+                  <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="bloodBankName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Blood Bank Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="City Blood Bank" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="bloodBankAddress"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Blood Bank Address</FormLabel>
+                          <FormControl>
+                            <Input placeholder="456 Health Ave, Springfield" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   <Button type="submit" size="lg" className="w-full">
                     <Droplets className="mr-2" />
                     Register and Donate

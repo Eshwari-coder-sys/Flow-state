@@ -3,6 +3,8 @@ export type BloodUnit = {
     bloodType: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
     expiryDate: string;
     status: 'Available' | 'Reserved';
+    bloodBankName: string;
+    bloodBankAddress: string;
 };
 
 export type Donor = {
@@ -16,4 +18,6 @@ export type Donor = {
   state: string;
   country: string;
   lastDonation: string;
+  bloodBankName: string;
+  bloodBankAddress: string;
 };
