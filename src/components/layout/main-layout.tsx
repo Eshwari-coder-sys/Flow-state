@@ -27,7 +27,7 @@ import {
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/find-donors", label: "Find Donors", icon: Users },
+  { href: "/find-donors", label: "Donor Network", icon: Users },
   { href: "/donate", label: "Become a Donor", icon: PlusSquare },
   { href: "/request", label: "Request Blood", icon: Send },
   { href: "/forecasting", label: "Forecasting", icon: LineChart },
@@ -65,8 +65,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
               return (
                 <SidebarMenuItem key={item.href}>
-                  <Link href={item.href}>
+                  <Link href={item.href} legacyBehavior passHref>
                     <SidebarMenuButton
+                      as="a"
                       isActive={isActive}
                       tooltip={{
                         children: item.label,

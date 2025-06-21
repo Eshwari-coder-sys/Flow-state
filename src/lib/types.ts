@@ -1,8 +1,8 @@
-export type InventoryItem = {
+export type BloodUnit = {
     id: string;
     bloodType: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
-    quantity: number;
     expiryDate: string;
+    status: 'Available' | 'Reserved';
 };
 
 export type Donor = {

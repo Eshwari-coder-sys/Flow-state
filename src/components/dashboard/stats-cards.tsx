@@ -1,32 +1,32 @@
 
-import { Droplets, TrendingUp, AlertTriangle, Users } from 'lucide-react';
+import { Droplets, TrendingUp, AlertTriangle, Users, Archive } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { Donor, InventoryItem } from '@/lib/types';
+import type { Donor, BloodUnit } from '@/lib/types';
 import { differenceInDays } from 'date-fns';
 
 interface StatsCardsProps {
-  inventory: InventoryItem[];
+  inventory: BloodUnit[];
   donors: Donor[];
 }
 
 const EXPIRY_THRESHOLD_DAYS = 15;
-const LOW_STOCK_THRESHOLD = 10;
 
 export default function StatsCards({ inventory, donors }: StatsCardsProps) {
-  const totalUnits = inventory.reduce((acc, item) => acc + item.quantity, 0);
+  const availableUnits = inventory.filter(item => item.status === 'Available');
+  const totalAvailableUnits = availableUnits.length;
 
-  const expiringSoonItems = inventory.filter(item => differenceInDays(new Date(item.expiryDate), new Date()) < EXPIRY_THRESHOLD_DAYS);
-  const expiringSoonUnits = expiringSoonItems.reduce((sum, item) => sum + item.quantity, 0);
+  const expiringSoonItems = availableUnits.filter(item => differenceInDays(new Date(item.expiryDate), new Date()) < EXPIRY_THRESHOLD_DAYS);
+  const expiringSoonUnits = expiringSoonItems.length;
 
-  const lowStockItems = inventory.filter(item => item.quantity < LOW_STOCK_THRESHOLD);
+  const reservedUnits = inventory.filter(item => item.status === 'Reserved').length;
   
   const totalDonors = donors.length;
 
   const stats = [
-    { title: 'Total Units', value: totalUnits, icon: Droplets, description: 'Across all blood types' },
+    { title: 'Available Units', value: totalAvailableUnits, icon: Droplets, description: 'Across all blood types' },
     { title: 'Total Donors', value: totalDonors, icon: Users, description: 'Registered in the system' },
-    { title: 'Expiring Units', value: expiringSoonUnits, icon: AlertTriangle, description: `In the next ${EXPIRY_THRESHOLD_DAYS} days` },
-    { title: 'Low Stock Items', value: lowStockItems.length, icon: TrendingUp, description: `Items with < ${LOW_STOCK_THRESHOLD} units`, isWarning: true },
+    { title: 'Expiring Soon', value: expiringSoonUnits, icon: AlertTriangle, description: `Units expiring in < ${EXPIRY_THRESHOLD_DAYS} days` },
+    { title: 'Reserved Units', value: reservedUnits, icon: Archive, description: 'Units reserved for requests' },
   ];
 
   return (

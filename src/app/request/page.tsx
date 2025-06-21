@@ -4,7 +4,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Send, UserSearch, Phone, Loader2 } from "lucide-react";
+import { Send, UserSearch, Phone, Loader2, BellRing } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -71,8 +71,8 @@ export default function RequestPage() {
   function onSubmit(data: z.infer<typeof requestFormSchema>) {
     requestBlood(data.bloodType, data.units);
     toast({
-      title: "Request Submitted!",
-      description: `Your request for ${data.units} unit(s) of ${data.bloodType} has been processed.`,
+      title: "Request Submitted & Units Reserved!",
+      description: `We've sent an alert to all registered donors to encourage new donations.`,
     });
     
     // Reset patient-specific fields, but keep location and blood type
@@ -95,7 +95,7 @@ export default function RequestPage() {
               <CardHeader>
                 <CardTitle className="text-2xl">Submit a Blood Request</CardTitle>
                 <CardDescription>
-                  For use by hospitals and clinics. This will draw from the inventory. We'll also automatically search for nearby donors for direct contact.
+                  For use by hospitals and clinics. This will reserve units from the central inventory. We'll also automatically search for nearby donors for direct contact.
                 </CardDescription>
               </CardHeader>
               <CardContent>

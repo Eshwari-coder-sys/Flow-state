@@ -17,7 +17,6 @@ import {
 import { format, differenceInDays } from 'date-fns';
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -33,37 +32,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { InventoryItem } from "@/lib/types";
+import type { BloodUnit } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const EXPIRY_THRESHOLD_DAYS = 15;
-const LOW_STOCK_THRESHOLD = 10;
 
-type ItemStatus = 'Available' | 'Low' | 'Expiring Soon';
-
-const getItemStatus = (item: InventoryItem): ItemStatus => {
-  const daysLeft = differenceInDays(new Date(item.expiryDate), new Date());
-  if (daysLeft < 0) return 'Expiring Soon'; // Should be handled as expired but for status let's group here.
-  if (daysLeft < EXPIRY_THRESHOLD_DAYS) return 'Expiring Soon';
-  if (item.quantity < LOW_STOCK_THRESHOLD) return 'Low';
-  return 'Available';
-};
-
-const getStatusBadgeVariant = (status: ItemStatus) => {
+const getStatusBadgeVariant = (status: BloodUnit['status']) => {
   switch (status) {
     case 'Available':
       return 'secondary';
-    case 'Low':
+    case 'Reserved':
       return 'default';
-    case 'Expiring Soon':
-      return 'destructive';
     default:
       return 'outline';
   }
 };
 
-export const columns: ColumnDef<InventoryItem>[] = [
+export const columns: ColumnDef<BloodUnit>[] = [
+    {
+    accessorKey: "id",
+    header: "Unit ID",
+    cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("id").substring(5,15)}</div>,
+  },
   {
     accessorKey: "bloodType",
     header: ({ column }) => {
@@ -78,19 +69,9 @@ export const columns: ColumnDef<InventoryItem>[] = [
       );
     },
     cell: ({ row }) => <div className="font-medium text-primary">{row.getValue("bloodType")}</div>,
-  },
-  {
-    accessorKey: "quantity",
-    header: ({ column }) => (
-         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-            Quantity (Units)
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-    ),
-    cell: ({ row }) => <div className="text-center">{row.getValue("quantity")}</div>,
+    filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: "expiryDate",
@@ -109,11 +90,10 @@ export const columns: ColumnDef<InventoryItem>[] = [
     }
   },
   {
-    id: "status",
-    accessorFn: (row) => getItemStatus(row),
+    accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-        const status = row.getValue("status") as ItemStatus;
+        const status = row.getValue("status") as BloodUnit['status'];
         return <Badge variant={getStatusBadgeVariant(status)}>{status}</Badge>;
     },
     filterFn: (row, id, value) => {
@@ -123,7 +103,7 @@ export const columns: ColumnDef<InventoryItem>[] = [
 ];
 
 interface InventoryTableProps {
-  data: InventoryItem[];
+  data: BloodUnit[];
 }
 
 export default function InventoryTable({ data }: InventoryTableProps) {
@@ -148,14 +128,28 @@ export default function InventoryTable({ data }: InventoryTableProps) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-4">
-        <Input
-          placeholder="Filter by blood type..."
-          value={(table.getColumn("bloodType")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("bloodType")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <Select
+          value={(table.getColumn("bloodType")?.getFilterValue() as string) ?? "all"}
+          onValueChange={(value) => {
+            if (value === "all") {
+                table.getColumn("bloodType")?.setFilterValue(undefined)
+            } else {
+                table.getColumn("bloodType")?.setFilterValue(value)
+            }
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter by blood type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Blood Types</SelectItem>
+             {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((type) => (
+                <SelectItem key={type} value={type}>
+                    {type}
+                </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Select
           value={(table.getColumn("status")?.getFilterValue() as string) ?? "all"}
           onValueChange={(value) => {
@@ -172,8 +166,7 @@ export default function InventoryTable({ data }: InventoryTableProps) {
           <SelectContent>
             <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="Available">Available</SelectItem>
-            <SelectItem value="Low">Low</SelectItem>
-            <SelectItem value="Expiring Soon">Expiring Soon</SelectItem>
+            <SelectItem value="Reserved">Reserved</SelectItem>
           </SelectContent>
         </Select>
       </div>

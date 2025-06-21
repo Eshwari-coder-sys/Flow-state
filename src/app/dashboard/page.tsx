@@ -13,6 +13,7 @@ import { useDonors } from '@/context/donor-context';
 
 export default function DashboardPage() {
   const { inventory, donors } = useDonors();
+  const availableInventory = inventory.filter(unit => unit.status === 'Available');
 
   return (
     <div className="flex flex-col gap-8">
@@ -48,10 +49,10 @@ export default function DashboardPage() {
           </Card>
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Blood Type Distribution</CardTitle>
+              <CardTitle>Blood Type Distribution (Available Units)</CardTitle>
             </CardHeader>
             <CardContent>
-              <BloodTypeChart data={inventory} />
+              <BloodTypeChart data={availableInventory} />
             </CardContent>
           </Card>
         </div>

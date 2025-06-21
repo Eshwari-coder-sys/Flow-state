@@ -11,13 +11,13 @@ export default function FindDonorsPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Header title="Find Donors" />
+      <Header title="Donor Network" />
       <main className="grid flex-1 gap-8 p-4 md:p-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Donor Registry</CardTitle>
+            <CardTitle className="text-2xl">Donor Network Registry</CardTitle>
             <CardDescription>
-              Search and filter our list of registered donors for emergency blood requests. Contact information is provided for immediate access.
+              Search our network of registered donors. In case of emergencies or low stock, you can contact them directly to request donations.
             </CardDescription>
           </CardHeader>
           <CardContent>

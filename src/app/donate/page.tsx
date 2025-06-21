@@ -51,7 +51,6 @@ export default function DonatePage() {
     addInventoryItem({
       bloodType: data.bloodType,
       quantity: 1, // Each registration adds one unit to the inventory
-      expiryDate: format(addDays(new Date(), 42), 'yyyy-MM-dd'),
     });
     toast({
       title: "Thank You For Registering!",

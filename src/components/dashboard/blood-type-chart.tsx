@@ -1,8 +1,9 @@
+
 "use client"
 
 import * as React from "react"
 import { RadialBar, RadialBarChart, Legend, Tooltip, ResponsiveContainer } from "recharts"
-import type { InventoryItem } from "@/lib/types"
+import type { BloodUnit } from "@/lib/types"
 
 import {
   ChartContainer,
@@ -10,13 +11,13 @@ import {
 } from "@/components/ui/chart"
 
 interface BloodTypeChartProps {
-  data: InventoryItem[]
+  data: BloodUnit[]
 }
 
 export default function BloodTypeChart({ data }: BloodTypeChartProps) {
     const chartData = React.useMemo(() => {
         const bloodTypeCounts = data.reduce((acc, item) => {
-            acc[item.bloodType] = (acc[item.bloodType] || 0) + item.quantity;
+            acc[item.bloodType] = (acc[item.bloodType] || 0) + 1; // each item is 1 unit
             return acc;
         }, {} as Record<string, number>);
 
