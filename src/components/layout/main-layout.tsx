@@ -9,6 +9,7 @@ import {
   LineChart,
   PlusSquare,
   Send,
+  Users,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -25,7 +26,8 @@ import {
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/donate", label: "Donate Blood", icon: PlusSquare },
+  { href: "/find-donors", label: "Find Donors", icon: Users },
+  { href: "/donate", label: "Become a Donor", icon: PlusSquare },
   { href: "/request", label: "Request Blood", icon: Send },
   { href: "/forecasting", label: "Forecasting", icon: LineChart },
 ];

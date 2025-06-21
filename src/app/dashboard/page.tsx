@@ -1,9 +1,12 @@
+import Link from 'next/link';
 import Header from '@/components/layout/header';
 import StatsCards from '@/components/dashboard/stats-cards';
 import BloodTypeChart from '@/components/dashboard/blood-type-chart';
 import InventoryTable from '@/components/dashboard/inventory-table';
 import type { InventoryItem } from '@/lib/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Search } from 'lucide-react';
 
 const mockInventory: InventoryItem[] = [
   { id: '1', bloodType: 'A+', quantity: 25, expiryDate: new Date('2024-09-15'), status: 'Available' },
@@ -22,6 +25,24 @@ export default function DashboardPage() {
       <Header title="Dashboard" />
       <main className="grid flex-1 gap-8 p-4 md:p-6">
         <StatsCards inventory={mockInventory} />
+
+        <Card className="bg-primary/10 border-primary/40">
+          <CardHeader>
+            <CardTitle>Emergency Donor Search</CardTitle>
+            <CardDescription>
+              In urgent need of a specific blood type? Search our registry to find nearby registered donors.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild>
+              <Link href="/find-donors">
+                <Search className="mr-2" />
+                Find a Donor
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
           <Card className="lg:col-span-3">
             <CardHeader>

@@ -3,27 +3,27 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { format } from "date-fns";
-import { CalendarIcon, Droplets } from "lucide-react";
+import { Droplets } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import Header from "@/components/layout/header";
 
 const donationFormSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
   email: z.string().email("Please enter a valid email address."),
-  bloodType: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]),
-  donationDate: z.date({
-    required_error: "A donation date is required.",
+  phone: z.string().min(10, "Please enter a valid phone number."),
+  bloodType: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
+    required_error: "Blood type is required.",
   }),
+  address: z.string().min(5, "Please enter a valid address."),
+  city: z.string().min(2, "Please enter a valid city."),
+  state: z.string().min(2, "Please enter a valid state/province."),
+  country: z.string().min(2, "Please enter a valid country."),
 });
 
 export default function DonatePage() {
@@ -31,59 +31,55 @@ export default function DonatePage() {
 
   const form = useForm<z.infer<typeof donationFormSchema>>({
     resolver: zodResolver(donationFormSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+    },
   });
 
   function onSubmit(data: z.infer<typeof donationFormSchema>) {
     console.log(data);
     toast({
-      title: "Donation Scheduled!",
-      description: "Thank you for your generosity. Your donation has been scheduled.",
+      title: "Thank You For Registering!",
+      description: "You've been added to our donor registry. Your generosity can save lives.",
     });
-    form.reset({ fullName: "", email: "" });
+    form.reset();
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <Header title="Donate Blood" />
+      <Header title="Become a Donor" />
       <main className="grid flex-1 gap-8 p-4 md:p-6">
         <div className="flex justify-center">
-          <Card className="w-full max-w-2xl">
+          <Card className="w-full max-w-3xl">
             <CardHeader>
-              <CardTitle className="text-2xl">Schedule a Donation</CardTitle>
+              <CardTitle className="text-2xl">Donor Registration</CardTitle>
               <CardDescription>
-                Your donation can save up to three lives. Please fill out the form below.
+                Join our community of lifesavers. Please fill out the form below to be added to our donor registry.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                  <FormField
-                    control={form.control}
-                    name="fullName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="john.doe@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="fullName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="John Doe" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name="bloodType"
@@ -93,7 +89,7 @@ export default function DonatePage() {
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select a blood type" />
+                                <SelectValue placeholder="Select your blood type" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -108,51 +104,96 @@ export default function DonatePage() {
                         </FormItem>
                       )}
                     />
-                    <FormField
+                  </div>
+
+                   <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                     <FormField
                       control={form.control}
-                      name="donationDate"
+                      name="email"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel>Preferred Donation Date</FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant={"outline"}
-                                  className={cn(
-                                    "w-full pl-3 text-left font-normal",
-                                    !field.value && "text-muted-foreground"
-                                  )}
-                                >
-                                  {field.value ? (
-                                    format(field.value, "PPP")
-                                  ) : (
-                                    <span>Pick a date</span>
-                                  )}
-                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date) =>
-                                  date < new Date() || date < new Date("1900-01-01")
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="john.doe@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="(123) 456-7890" {...field} />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
+
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Street Address</FormLabel>
+                        <FormControl>
+                          <Input placeholder="123 Main St" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                     <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Springfield" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State / Province</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Illinois" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <FormControl>
+                            <Input placeholder="USA" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
                   <Button type="submit" size="lg" className="w-full">
                     <Droplets className="mr-2" />
-                    Schedule Donation
+                    Register as a Donor
                   </Button>
                 </form>
               </Form>
