@@ -56,12 +56,11 @@ export default function LandingPage() {
           </div>
           <div className="mt-16 md:mt-24 rounded-2xl border shadow-xl overflow-hidden">
             <Image
-              src="https://placehold.co/1200x600.png"
-              alt="A screenshot of the FlowState application dashboard, showing charts and statistics for blood inventory."
+              src="https://images.unsplash.com/photo-1576091160550-2173dba999ab?w=1200&q=80"
+              alt="A healthcare professional analyzing medical data on a tablet, representing the FlowState dashboard."
               width={1200}
               height={600}
-              data-ai-hint="medical dashboard"
-              className="w-full"
+              className="w-full object-cover"
             />
           </div>
         </section>
@@ -116,11 +115,10 @@ export default function LandingPage() {
                     </div>
                     <div className="rounded-lg overflow-hidden shadow-lg">
                         <Image
-                            src="https://placehold.co/600x400.png"
-                            alt="A group of smiling blood donors and medical staff"
+                            src="https://images.unsplash.com/photo-1542499642-0d1a498a4484?w=600&q=80"
+                            alt="A close-up of a person donating blood."
                             width={600}
                             height={400}
-                            data-ai-hint="blood donation"
                             className="w-full h-auto object-cover"
                         />
                     </div>
