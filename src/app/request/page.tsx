@@ -29,7 +29,7 @@ const requestFormSchema = z.object({
 
 export default function RequestPage() {
   const { toast } = useToast();
-  const { donors, requestBlood } = useDonors();
+  const { donors, requestBlood, fulfillRequestByDonor } = useDonors();
   const [suggestedDonors, setSuggestedDonors] = useState<Donor[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -72,8 +72,6 @@ export default function RequestPage() {
     const requestSuccessful = requestBlood(data.bloodType, data.units);
 
     if (requestSuccessful) {
-      // Reset patient-specific fields, but keep location and blood type
-      // so the donor suggestions remain relevant for the current search.
       form.reset({
         ...data,
         patientName: "",
@@ -81,6 +79,11 @@ export default function RequestPage() {
         units: 1,
       });
     }
+  }
+
+  function handleAcceptRequest(donorToAccept: Donor) {
+    fulfillRequestByDonor(donorToAccept);
+    setSuggestedDonors(prev => prev.filter(d => d.id !== donorToAccept.id));
   }
 
   return (
@@ -258,11 +261,9 @@ export default function RequestPage() {
                             Blood Type: {donor.bloodType}
                           </p>
                         </div>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={`tel:${donor.phone}`}>
-                            <Phone className="mr-2" />
-                            Contact
-                          </a>
+                        <Button variant="outline" size="sm" onClick={() => handleAcceptRequest(donor)}>
+                            <BellRing className="mr-2" />
+                            Accept Request
                         </Button>
                       </li>
                     ))}

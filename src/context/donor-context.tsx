@@ -12,6 +12,7 @@ interface BloodBankContextType {
   inventory: BloodUnit[];
   addInventoryItem: (item: { bloodType: BloodUnit['bloodType'], quantity: number, bloodBankName: string, bloodBankAddress: string }) => void;
   requestBlood: (bloodType: BloodUnit['bloodType'], units: number) => boolean;
+  fulfillRequestByDonor: (donor: Donor) => void;
 }
 
 const BloodBankContext = createContext<BloodBankContextType | undefined>(undefined);
@@ -67,7 +68,6 @@ export function DonorProvider({ children }: { children: ReactNode }) {
           
           const currentAvailableUnits = updatedInventory.filter(unit => unit.bloodType === bloodType && unit.status === 'Available');
           
-          // Sort by expiry date to use oldest blood first
           currentAvailableUnits.sort((a, b) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
 
           for (let i = 0; i < units; i++) {
@@ -94,9 +94,30 @@ export function DonorProvider({ children }: { children: ReactNode }) {
       return true;
   };
 
+  const fulfillRequestByDonor = (donor: Donor) => {
+    addInventoryItem({
+      bloodType: donor.bloodType,
+      quantity: 1,
+      bloodBankName: donor.bloodBankName,
+      bloodBankAddress: donor.bloodBankAddress,
+    });
+
+    setDonors(prevDonors =>
+      prevDonors.map(d =>
+        d.id === donor.id
+          ? { ...d, lastDonation: new Date().toISOString().split('T')[0] }
+          : d
+      )
+    );
+
+    toast({
+      title: "Request Accepted & Met Successfully!",
+      description: `Thank you, ${donor.fullName}. Your donation has been recorded in the inventory.`,
+    });
+  };
 
   return (
-    <BloodBankContext.Provider value={{ donors, addDonor, inventory, addInventoryItem, requestBlood }}>
+    <BloodBankContext.Provider value={{ donors, addDonor, inventory, addInventoryItem, requestBlood, fulfillRequestByDonor }}>
       {children}
     </BloodBankContext.Provider>
   );
