@@ -117,10 +117,10 @@ export default function LandingPage() {
                     <div className="rounded-lg overflow-hidden shadow-lg">
                         <Image
                             src="https://placehold.co/600x400.png"
-                            alt="Community of donors"
+                            alt="A group of smiling blood donors"
                             width={600}
                             height={400}
-                            data-ai-hint="community health"
+                            data-ai-hint="blood donation"
                             className="w-full h-auto object-cover"
                         />
                     </div>
