@@ -32,7 +32,7 @@ export default function Header({ title }: HeaderProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User avatar" />
+                <AvatarImage src="https://placehold.co/40x40.png" alt="User avatar" data-ai-hint="person user" />
                 <AvatarFallback>AD</AvatarFallback>
               </Avatar>
             </Button>
