@@ -74,8 +74,15 @@ export default function RequestPage() {
       title: "Request Submitted!",
       description: `Your request for ${data.units} unit(s) of ${data.bloodType} has been processed.`,
     });
-    form.reset({ patientName: "", hospital: "", city: "", state: "", units: 1 });
-    setSuggestedDonors([]);
+    
+    // Reset patient-specific fields, but keep location and blood type
+    // so the donor suggestions remain relevant for the current search.
+    form.reset({
+      ...data,
+      patientName: "",
+      hospital: "",
+      units: 1,
+    });
   }
 
   return (
