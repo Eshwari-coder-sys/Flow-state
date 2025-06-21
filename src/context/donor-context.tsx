@@ -18,6 +18,18 @@ const mockDonors: Donor[] = [
   { id: '9', fullName: 'Robert Wilson', email: 'robert.w@example.com', phone: '555-444-5555', bloodType: 'A+', address: '111 Pine St', city: 'Springfield', state: 'IL', country: 'USA', lastDonation: '2024-01-20' },
 ];
 
+// The initial mock data for inventory.
+const mockInventory: InventoryItem[] = [
+    { id: 'inv-1', bloodType: 'O+', quantity: 35, expiryDate: '2024-09-15' },
+    { id: 'inv-2', bloodType: 'A+', quantity: 22, expiryDate: '2024-09-20' },
+    { id: 'inv-3', bloodType: 'B+', quantity: 18, expiryDate: '2024-08-28' },
+    { id: 'inv-4', bloodType: 'AB+', quantity: 7, expiryDate: '2024-08-15' },
+    { id: 'inv-5', bloodType: 'O-', quantity: 12, expiryDate: '2024-09-02' },
+    { id: 'inv-6', bloodType: 'A-', quantity: 9, expiryDate: '2024-08-22' },
+    { id: 'inv-7', bloodType: 'B-', quantity: 4, expiryDate: '2024-08-19' },
+    { id: 'inv-8', bloodType: 'A+', quantity: 10, expiryDate: '2024-08-25' },
+];
+
 
 interface BloodBankContextType {
   donors: Donor[];
@@ -32,7 +44,7 @@ const BloodBankContext = createContext<BloodBankContextType | undefined>(undefin
 export function DonorProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const [donors, setDonors] = useState<Donor[]>(mockDonors);
-  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [inventory, setInventory] = useState<InventoryItem[]>(mockInventory);
 
   const addDonor = (newDonorData: Omit<Donor, 'id' | 'lastDonation'>) => {
     const newDonor: Donor = {
