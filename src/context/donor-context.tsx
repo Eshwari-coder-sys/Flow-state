@@ -11,7 +11,7 @@ interface BloodBankContextType {
   addDonor: (donor: Omit<Donor, 'id' | 'lastDonation'>) => void;
   inventory: BloodUnit[];
   addInventoryItem: (item: { bloodType: BloodUnit['bloodType'], quantity: number, bloodBankName: string, bloodBankAddress: string }) => void;
-  requestBlood: (bloodType: BloodUnit['bloodType'], units: number) => void;
+  requestBlood: (bloodType: BloodUnit['bloodType'], units: number) => boolean;
 }
 
 const BloodBankContext = createContext<BloodBankContextType | undefined>(undefined);
@@ -50,26 +50,28 @@ export function DonorProvider({ children }: { children: ReactNode }) {
       });
   };
 
-  const requestBlood = (bloodType: BloodUnit['bloodType'], units: number) => {
+  const requestBlood = (bloodType: BloodUnit['bloodType'], units: number): boolean => {
+      const availableUnits = inventory.filter(unit => unit.bloodType === bloodType && unit.status === 'Available');
+      
+      if (availableUnits.length < units) {
+          toast({
+              variant: "destructive",
+              title: "Inventory Alert",
+              description: `Could not fulfill the entire request. Only ${availableUnits.length} units of ${bloodType} available.`,
+          });
+          return false;
+      }
+      
       setInventory(prevInventory => {
           const updatedInventory = [...prevInventory];
           
-          const availableUnits = updatedInventory.filter(unit => unit.bloodType === bloodType && unit.status === 'Available');
+          const currentAvailableUnits = updatedInventory.filter(unit => unit.bloodType === bloodType && unit.status === 'Available');
           
-          if (availableUnits.length < units) {
-              toast({
-                  variant: "destructive",
-                  title: "Inventory Alert",
-                  description: `Could not fulfill the entire request. Only ${availableUnits.length} units of ${bloodType} available.`,
-              });
-              return prevInventory; // Don't change anything if request can't be fulfilled
-          }
-
           // Sort by expiry date to use oldest blood first
-          availableUnits.sort((a, b) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
+          currentAvailableUnits.sort((a, b) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
 
           for (let i = 0; i < units; i++) {
-              const unitToReserve = availableUnits[i];
+              const unitToReserve = currentAvailableUnits[i];
               const originalUnitIndex = updatedInventory.findIndex(u => u.id === unitToReserve.id);
               if (originalUnitIndex > -1) {
                   updatedInventory[originalUnitIndex].status = 'Reserved';
@@ -78,6 +80,8 @@ export function DonorProvider({ children }: { children: ReactNode }) {
           
           return updatedInventory;
       });
+
+      return true;
   };
 
 

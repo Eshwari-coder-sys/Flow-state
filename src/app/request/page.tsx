@@ -69,20 +69,26 @@ export default function RequestPage() {
   }, [watchedBloodType, watchedCity, watchedState, donors]);
 
   function onSubmit(data: z.infer<typeof requestFormSchema>) {
-    requestBlood(data.bloodType, data.units);
-    toast({
-      title: "Request Submitted & Units Reserved!",
-      description: `We've sent an alert to all registered donors to encourage new donations.`,
-    });
-    
-    // Reset patient-specific fields, but keep location and blood type
-    // so the donor suggestions remain relevant for the current search.
-    form.reset({
-      ...data,
-      patientName: "",
-      hospital: "",
-      units: 1,
-    });
+    const requestSuccessful = requestBlood(data.bloodType, data.units);
+
+    if (requestSuccessful) {
+      const matchingDonors = donors.filter(
+        (donor) => donor.bloodType === data.bloodType
+      );
+      toast({
+        title: "Request Submitted & Units Reserved!",
+        description: `An alert has been sent to ${matchingDonors.length} matching donor(s) with blood type ${data.bloodType} to encourage new donations.`,
+      });
+      
+      // Reset patient-specific fields, but keep location and blood type
+      // so the donor suggestions remain relevant for the current search.
+      form.reset({
+        ...data,
+        patientName: "",
+        hospital: "",
+        units: 1,
+      });
+    }
   }
 
   return (
