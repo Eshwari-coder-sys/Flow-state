@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<H1>BLOOD MANAGEMENT SYSTEM</H1> 
 # Flow-state
 =======
 # Firebase Studio
